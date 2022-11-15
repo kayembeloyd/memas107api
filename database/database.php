@@ -1,20 +1,16 @@
 <?php 
 
 class Database {
-    /*
-
+    /* ONLINE
     public static $servername = "localhost";
     public static $username = "id19693607_memas";
     public static $password = "2S9Ahy_@(EyFZgde";
+    public static $DATABASE_NAME = "id19693607_memas106"; */
 
-    public static $DATABASE_NAME = "id19693607_memas106";
-    
-    */
-
+    /* OFFLINE */
     public static $servername = "localhost";
     public static $username = "root";
     public static $password = "";
-
     public static $DATABASE_NAME = "memas106";
     
 
@@ -23,10 +19,9 @@ class Database {
         $conn = new mysqli(self::$servername, self::$username, self::$password);
         
         // Check connection
-        if ($conn->connect_error) {
+        if ($conn->connect_error)
             return ($conn->connect_error);
-        }
-
+        
         $conn->close();
 
         return ('connected');
@@ -37,10 +32,9 @@ class Database {
         $conn = new mysqli(self::$servername, self::$username, self::$password);
         
         // Check connection
-        if ($conn->connect_error) {
+        if ($conn->connect_error) 
             return ($conn->connect_error);
-        }
-
+        
         $results = $conn->query($sql_statement);
 
         $conn->close();
@@ -53,9 +47,8 @@ class Database {
         $conn = new mysqli(self::$servername, self::$username, self::$password);
         
         // Check connection
-        if ($conn->connect_error) {
+        if ($conn->connect_error)
             return ($conn->connect_error);
-        }
 
         $results = $conn->query($sql_statement);
 
@@ -64,9 +57,5 @@ class Database {
         $conn->close();
 
         return $last_id;
-    }
-
-    public static function migrate(){
-        Migration::runMigration();
     }
 }
