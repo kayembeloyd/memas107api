@@ -32,6 +32,6 @@ class EquipmentsController {
         foreach ($sup_fields as $key => $value)
             $sup_fields[$key] = isset($_POST[$key]) ? $_POST[$key] : $sup_fields[$key];
 
-        
+        $status = Equipment::create($fields, $sup_fields);
     }
 }
