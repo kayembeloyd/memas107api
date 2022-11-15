@@ -15,10 +15,8 @@ class Database {
     
 
     public static function checkConnection(){
-        // Make connection 
         $conn = new mysqli(self::$servername, self::$username, self::$password);
         
-        // Check connection
         if ($conn->connect_error)
             return ($conn->connect_error);
         
@@ -28,10 +26,8 @@ class Database {
     }
 
     public static function execute($sql_statement){
-        // Make connection 
         $conn = new mysqli(self::$servername, self::$username, self::$password);
         
-        // Check connection
         if ($conn->connect_error) 
             return ($conn->connect_error);
         
@@ -42,11 +38,9 @@ class Database {
         return $results;
     }
 
-    public static function execute_getting_last_id($sql_statement){
-        // Make connection 
+    public static function executeGettingLastID($sql_statement){
         $conn = new mysqli(self::$servername, self::$username, self::$password);
         
-        // Check connection
         if ($conn->connect_error)
             return ($conn->connect_error);
 
