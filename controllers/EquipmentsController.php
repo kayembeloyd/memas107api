@@ -50,4 +50,17 @@ class EquipmentsController {
 
         echo json_encode($equipments);
     }
+
+    public static function update(){
+        $fields = array();
+
+        $fields['equipments'] = ['[]', 'string'];
+    
+        foreach ($fields as $key => $value)
+            $fields[$key][0] = isset($_REQUEST[$key]) ? $_REQUEST[$key] : $fields[$key][0];         
+
+        $updated_equipments = Equipment::update($fields);
+
+        echo json_encode($updated_equipments);
+    }
 }

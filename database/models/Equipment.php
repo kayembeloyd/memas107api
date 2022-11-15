@@ -7,23 +7,10 @@ include_once "database/models/TechnicalSpecification.php";
 class Equipment {
     public static function create($fields, $sub_fields){        
         // Creating the essential SQL statement elements
-        $keys = '';
-        $values = '';
+        $kv = Database::getKeysValuesStatements($fields);
 
-        $count = 0;
-        foreach ($fields as $key => $value) {
-            if ($count <= 0){
-                $keys = $key;
-                if ($value[1] === 'string') $values .= "'" . $value[0] . "'";
-                else if ($value[1] === 'int') $values .= $value[0]; 
-            } else {
-                $keys .= (',' . $key);
-                if ($value[1] === 'string') $values .= ",'" . $value[0] . "'";
-                else if ($value[1] === 'int') $values .= ',' . $value[0]; 
-            }
-
-            $count++;
-        }
+        $keys = $kv[0];
+        $values = $kv[1];
         // Creating the essential SQL statement elements
 
         $insert_sql_statement = "INSERT INTO " . Database::$DATABASE_NAME . ".equipments (" . $keys . ") VALUES (" . $values . ")";
@@ -40,6 +27,27 @@ class Equipment {
         return $e_oid;
     }
 
+    public static function get($e_oid){
+        $select_sql_statement = "SELECT * FROM " . Database::$DATABASE_NAME . ".equipments WHERE e_oid = " . $e_oid;
+        // echo "</br></br>select_sql_statement = " . $select_sql_statement;
+        $equipment_results = Database::execute($select_sql_statement);
+
+        $equipment = null;
+
+        if ($equipment_results){
+            if ($equipment_object = mysqli_fetch_object($equipment_results)){
+                $modified_equipment_object = array();
+
+                foreach ($equipment_object as $key => $value)
+                    $modified_equipment_object[$key] = $value;
+                
+                $equipment = $modified_equipment_object;
+            }
+        }
+
+        return $equipment;
+    }
+
     public static function index($fields){
         $select_sql_statement = "SELECT * FROM " . Database::$DATABASE_NAME . ".equipments WHERE uploaded_at > '" . $fields['uploaded_at'][0] . "' LIMIT " . $fields['number_of_equipments'][0] . " OFFSET " . ($fields['page'][0] - 1) * $fields['number_of_equipments'][0];  
         // echo "</br></br>select_sql_statement = " . $select_sql_statement;
@@ -49,17 +57,33 @@ class Equipment {
 
         if ($equipments_results){
             while($equipment_object = mysqli_fetch_object($equipments_results)){
-                
                 $modified_equipment_object = array();
                 
-                foreach ($equipment_object as $key => $value) {
+                foreach ($equipment_object as $key => $value)
                     $modified_equipment_object[$key] = $value;
-                }
-                
+
+                $modified_equipment_object['technical_specification'] = TechnicalSpecification::get(
+                    $modified_equipment_object['technical_specification_oid']
+                );
+
                 array_push($equipments, $modified_equipment_object);
             }
         }
 
         return $equipments;
+    }
+
+    public static function update($fields){
+        $equipments_to_update = json_decode($fields['equipments'][0]);
+        $updated_equipments = array();
+
+        foreach ($equipments_to_update as $eq_to_update) {
+            $eq_in_database = self::get($eq_to_update->e_oid);
+
+            if ($eq_in_database && ($eq_in_database['updated_at'] > $eq_to_update->updated_at))
+                array_push($updated_equipments, $eq_in_database);
+        }
+
+        return $updated_equipments;
     }
 }

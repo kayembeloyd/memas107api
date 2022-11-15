@@ -14,6 +14,7 @@ switch($_SERVER['REQUEST_METHOD']){
         break;
     case 'POST':
         Route::add('/equipments', function() { EquipmentsController::create(); });
+        Route::add('/equipments/update', function() { EquipmentsController::update(); });
         break;
     default:
         echo 'unsupported method';

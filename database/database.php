@@ -58,4 +58,26 @@ class Database {
 
         return $last_id;
     }
+
+    public static function getKeysValuesStatements($fields){
+        $keys = '';
+        $values = '';
+
+        $count = 0;
+        foreach ($fields as $key => $value) {
+            if ($count <= 0){
+                $keys = $key;
+                if ($value[1] === 'string') $values .= "'" . $value[0] . "'";
+                else if ($value[1] === 'int') $values .= $value[0]; 
+            } else {
+                $keys .= (',' . $key);
+                if ($value[1] === 'string') $values .= ",'" . $value[0] . "'";
+                else if ($value[1] === 'int') $values .= ',' . $value[0]; 
+            }
+
+            $count++;
+        }
+
+        return [$keys, $values];
+    }
 }
