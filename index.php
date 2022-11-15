@@ -10,11 +10,10 @@ Cors::cors();
 switch($_SERVER['REQUEST_METHOD']){
     case 'GET':
         Route::add('/', function(){ echo('welcome to Memas107'); });
-
+        Route::add('/equipments', function() { EquipmentsController::index(); });
         break;
     case 'POST':
         Route::add('/equipments', function() { EquipmentsController::create(); });
-
         break;
     default:
         echo 'unsupported method';
