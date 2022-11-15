@@ -27,25 +27,39 @@ class Equipment {
         // Creating the essential SQL statement elements
 
         $insert_sql_statement = "INSERT INTO " . Database::$DATABASE_NAME . ".equipments (" . $keys . ") VALUES (" . $values . ")";
-
-        echo "</br></br>insert_sql_statement = " . $insert_sql_statement;
-        $e_oid = 0; // After sql execution
+        // echo "</br></br>insert_sql_statement = " . $insert_sql_statement;
+        $e_oid = Database::execute_getting_last_id($insert_sql_statement);
 
         $technical_specification_oid = TechnicalSpecification::create($sub_fields, null);
 
         // UPDATE the equipment
-        $update_sql_statement = "UPDATE " . Database::$DATABASE_NAME . ".equipments technical_specification_oid = " . $technical_specification_oid . " WHERE e_oid = " . $e_oid;
-        echo "</br></br>update_sql_statement = " . $update_sql_statement;
+        $update_sql_statement = "UPDATE " . Database::$DATABASE_NAME . ".equipments SET technical_specification_oid = " . $technical_specification_oid . " WHERE e_oid = " . $e_oid;
+        // echo "</br></br>update_sql_statement = " . $update_sql_statement;
+        Database::execute($update_sql_statement);
 
         return $e_oid;
     }
 
     public static function index($fields){
-        /// SELECT * FROM `equipments` WHERE id <> 2 AND id <> 4 AND id <> 8 LIMIT 5 OFFSET 5
+        $select_sql_statement = "SELECT * FROM " . Database::$DATABASE_NAME . ".equipments WHERE uploaded_at > '" . $fields['uploaded_at'][0] . "' LIMIT " . $fields['number_of_equipments'][0] . " OFFSET " . ($fields['page'][0] - 1) * $fields['number_of_equipments'][0];  
+        // echo "</br></br>select_sql_statement = " . $select_sql_statement;
+        $equipments_results = Database::execute($select_sql_statement);
 
-        $select_sql_statement = "SELECT * FROM " . Database::$DATABASE_NAME . ".equipments WHERE created_at > '" . $fields['created_at'][0] . "' LIMIT " . $fields['number_of_equipments'][0] . " OFFSET " . ($fields['page'][0] - 1) * $fields['number_of_equipments'][0];  
-        echo "</br></br>select_sql_statement = " . $select_sql_statement;
+        $equipments = array();
 
-        return array();
+        if ($equipments_results){
+            while($equipment_object = mysqli_fetch_object($equipments_results)){
+                
+                $modified_equipment_object = array();
+                
+                foreach ($equipment_object as $key => $value) {
+                    $modified_equipment_object[$key] = $value;
+                }
+                
+                array_push($equipments, $modified_equipment_object);
+            }
+        }
+
+        return $equipments;
     }
 }

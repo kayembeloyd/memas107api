@@ -20,6 +20,7 @@ class EquipmentsController {
         // $fields['e_oid'] = [0, 'int']; // Automatic
         // $fields['technical_specification_oid'] = [0, 'int'] // Automatic;
         $fields['created_at'] = ['', 'string'];
+        $fields['uploaded_at'] = [date('Y-m-d H:i:s', time()), 'string'];
         $fields['updated_at'] = ['', 'string'];
 
         $sup_fields['technical_specification'] = ['[]', 'string'];
@@ -40,11 +41,13 @@ class EquipmentsController {
 
         $fields['number_of_equipments'] = [0, 'int'];
         $fields['page'] = [0, 'int'];
-        $fields['created_at'] = ['', 'string'];
+        $fields['uploaded_at'] = ['', 'string'];
         
         foreach ($fields as $key => $value)
             $fields[$key][0] = isset($_REQUEST[$key]) ? $_REQUEST[$key] : $fields[$key][0];         
 
         $equipments = Equipment::index($fields);
+
+        echo json_encode($equipments);
     }
 }

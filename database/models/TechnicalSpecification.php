@@ -1,5 +1,6 @@
 <?php 
 
+include_once "database/database.php";
 class TechnicalSpecification {
     public static function create($fields, $sub_fields){        
         
@@ -25,8 +26,8 @@ class TechnicalSpecification {
 
         $insert_sql_statement = "INSERT INTO " . Database::$DATABASE_NAME . ".technical_specifications (" . $keys . ") VALUES (" . $values . ")";
 
-        echo "</br></br>insert_sql_statement = " . $insert_sql_statement;
-        $tss_oid = 0; // After sql execution
+        // echo "</br></br>insert_sql_statement = " . $insert_sql_statement;
+        $tss_oid = Database::execute_getting_last_id($insert_sql_statement);
 
         return $tss_oid;
     }

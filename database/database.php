@@ -11,7 +11,7 @@ class Database {
     public static $servername = "localhost";
     public static $username = "root";
     public static $password = "";
-    public static $DATABASE_NAME = "memas106";
+    public static $DATABASE_NAME = "memas107";
     
 
     public static function checkConnection(){

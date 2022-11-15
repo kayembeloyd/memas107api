@@ -1,6 +1,8 @@
 <?php
 class Cors {
     static public function cors() {
+        date_default_timezone_set('Africa/Blantyre');
+
         if (isset($_SERVER['HTTP_ORIGIN'])) {
             header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
             header('Access-Control-Allow-Credentials: true');
