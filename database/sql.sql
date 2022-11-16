@@ -3,3 +3,5 @@ CREATE TABLE `memas107`.`equipments` (`asset_tag` VARCHAR(256) NULL , `commissio
 CREATE TABLE `memas107`.`technical_specifications` (`tss_id` INT NULL , `technical_specification` TEXT NULL , `tss_oid` INT NOT NULL AUTO_INCREMENT , PRIMARY KEY (`tss_oid`)) ENGINE = InnoDB;
 
 ALTER TABLE `memas107`.`equipments` ADD `uploaded_at` DATETIME NULL AFTER `created_at`;
+
+ALTER TABLE `memas107`.`equipments` ADD `next_service_date` DATETIME NULL AFTER `supplied_by`, ADD `last_maintenance_date` DATETIME NULL AFTER `next_service_date`, ADD `status` VARCHAR(256) NOT NULL AFTER `last_maintenance_date`, ADD `update_status` VARCHAR(256) NOT NULL AFTER `status`;

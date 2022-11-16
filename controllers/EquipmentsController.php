@@ -34,6 +34,8 @@ class EquipmentsController {
             $sup_fields[$key][0] = isset($_POST[$key]) ? $_POST[$key] : $sup_fields[$key][0];
 
         $e_iod = Equipment::create($fields, $sup_fields);
+
+        echo json_encode(Equipment::get($e_iod));
     }
 
     public static function index(){

@@ -75,6 +75,20 @@ class Equipment {
 
             if ($eq_in_database && ($eq_in_database['updated_at'] > $eq_to_update->updated_at))
                 array_push($updated_equipments, $eq_in_database);
+            else if ($eq_in_database && ($eq_in_database['updated_at'] < $eq_to_update->updated_at)){
+                $count = 0;
+                $update_sql_statement_set_element = '';
+
+                foreach ($eq_to_update as $key => $value) {
+                    if ($key == 'e_id' || $key == 'e_oid' || $key == 'technical_specification_id' || $key == 'technical_specification_oid') continue;
+                    
+                    if ($count == 0) {$update_sql_statement_set_element .= $key . "='" . $value . "'"; $count++;}
+                    else {$update_sql_statement_set_element .= ', ' . $key . "='" . $value . "'"; $count++;}
+                }
+
+                $update_sql_statement = "UPDATE " . Database::$DATABASE_NAME . ".equipments SET " . $update_sql_statement_set_element . " WHERE e_oid = " . $eq_to_update->e_oid; 
+                Database::execute($update_sql_statement);
+            }
         }
 
         return $updated_equipments;
