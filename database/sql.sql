@@ -5,3 +5,7 @@ CREATE TABLE `memas107`.`technical_specifications` (`tss_id` INT NULL , `technic
 ALTER TABLE `memas107`.`equipments` ADD `uploaded_at` DATETIME NULL AFTER `created_at`;
 
 ALTER TABLE `memas107`.`equipments` ADD `next_service_date` DATETIME NULL AFTER `supplied_by`, ADD `last_maintenance_date` DATETIME NULL AFTER `next_service_date`, ADD `status` VARCHAR(256) NOT NULL AFTER `last_maintenance_date`, ADD `update_status` VARCHAR(256) NOT NULL AFTER `status`;
+
+CREATE TABLE `memas107`.`maintenance_logs` ( `date` DATETIME NULL , `description` TEXT NULL , `equipment_id` INT NULL , `equipment_oid` INT NULL , `maintenance_log_info_id` INT NULL , `ml_id` INT NULL , `type` VARCHAR(256) NULL , `ml_oid` INT NOT NULL AUTO_INCREMENT , `maintenance_log_info_oid` INT NULL , `created_at` DATETIME NULL , `uploaded_at` DATETIME NULL , `updated_at` DATETIME NULL , PRIMARY KEY (`ml_oid`)) ENGINE = InnoDB;
+
+CREATE TABLE `memas107`.`maintenance_log_infos` ( `mli_id` INT NULL , `mli_oid` INT NOT NULL AUTO_INCREMENT , `maintenance_log_info` TEXT NULL , PRIMARY KEY (`mli_oid`)) ENGINE = InnoDB;
