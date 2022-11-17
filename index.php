@@ -4,6 +4,7 @@ include_once "router/route.php";
 include_once "router/cors.php";
 
 include_once "controllers/EquipmentsController.php";
+include_once "controllers/MaintenanceLogsController.php"
 
 Cors::cors();
 
@@ -15,6 +16,8 @@ switch($_SERVER['REQUEST_METHOD']){
     case 'POST':
         Route::add('/equipments', function() { EquipmentsController::create(); });
         Route::add('/equipments/update', function() { EquipmentsController::update(); });
+        Route::add('/maintenance-logs', function() { MaintenanceLogsController::create(); });
+
         break;
     default:
         echo 'unsupported method';
