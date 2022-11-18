@@ -88,6 +88,8 @@ class Equipment {
 
                 $update_sql_statement = "UPDATE " . Database::$DATABASE_NAME . ".equipments SET " . $update_sql_statement_set_element . " WHERE e_oid = " . $eq_to_update->e_oid; 
                 Database::execute($update_sql_statement);
+            } else {
+                // create it TODO
             }
         }
 
