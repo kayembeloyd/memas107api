@@ -1,5 +1,6 @@
 <?php 
 
+include_once "database/database.php";
 class MaintenanceLogInfo {
     public static function create($fields, $sub_fields){
         $kv = Database::getKeysValuesStatements($fields);
@@ -9,7 +10,7 @@ class MaintenanceLogInfo {
 
         $insert_sql_statement = "INSERT INTO " . Database::$DATABASE_NAME . ".maintenance_log_infos (" . $keys . ") VALUES (" . $values . ")";
 
-        $mli_oid = Database::executeGettigLastID($insert_sql_statement);
+        $mli_oid = Database::executeGettingLastID($insert_sql_statement);
 
         return $mli_oid;
     }

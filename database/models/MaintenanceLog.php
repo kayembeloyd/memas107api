@@ -16,7 +16,7 @@ class MaintenanceLog {
 
         $maintenance_log_info_oid = MaintenanceLogInfo::create($sub_fields, null);
         
-        $update_sql_statement = "UPDATE " . Database::$DATABASE_NAME . ".maintenance_logs SET maintenance_log_oid = " . $maintenance_log_info_oid . " WHERE ml_oid = " . $ml_oid;
+        $update_sql_statement = "UPDATE " . Database::$DATABASE_NAME . ".maintenance_logs SET maintenance_log_info_oid = " . $maintenance_log_info_oid . " WHERE ml_oid = " . $ml_oid;
         Database::execute($update_sql_statement);
 
         return $ml_oid;
@@ -56,7 +56,7 @@ class MaintenanceLog {
                     $modified_maintenance_log_object[$key] = $value;
 
                 $modified_maintenance_log_object['maintenance_log_info'] = MaintenanceLogInfo::get(
-                    $modified_maintenance_log_object['technical_specification_oid']
+                    $modified_maintenance_log_object['maintenance_log_info_oid']
                 );
 
                 array_push($maintenance_logs, $modified_maintenance_log_object);
@@ -71,7 +71,7 @@ class MaintenanceLog {
         $updated_maintenance_logs = array();
 
         foreach ($maintenance_logs_to_update as $ml_to_update) {
-            $ml_in_database = self::get($ml_to_update->e_oid);
+            $ml_in_database = self::get($ml_to_update->ml_oid);
 
             if ($ml_in_database && ($ml_in_database['updated_at'] > $ml_to_update->updated_at))
                 array_push($updated_maintenance_logs, $ml_in_database);
